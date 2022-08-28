@@ -1,0 +1,160 @@
+﻿SCIENTIFIC COMPUTING LAB
+                                        WORKSHEET 3
+                                                                                        20PT06
+                                                                                
+
+
+
+
+from sympy import *
+import math
+
+
+1)Bisection method
+________________
+
+
+def sub(expr,value):
+    val=expr.subs(x,value)
+    return val
+
+
+def bisection(x0,x1,e):
+    step = 1
+    print('\n\n*** BISECTION METHOD IMPLEMENTATION ***')
+    condition = True
+    while condition:
+        x2 = (x0 + x1)/2
+        print('Iteration-%d, x2 = %0.6f and f(x2) = %0.6f' % (step, x2, sub(e,x2)))
+
+
+        if sub(e,x0) * sub(e,x2) < 0:
+            x1 = x2
+        else:
+            x0 = x2
+        
+        step = step + 1
+        condition = abs(sub(e,x2)) > 0.001
+
+
+    print('\nRequired Root is : %0.8f' % x2)
+
+
+x1=1
+x2=2
+x,y = symbols('x y')
+expr=x*x*x - x - 2
+bisection(x1, x2, expr)
+
+
+
+
+
+
+OUTPUT:
+*** BISECTION METHOD IMPLEMENTATION ***
+Iteration-1, x2 = 1.500000 and f(x2) = -0.125000
+Iteration-2, x2 = 1.750000 and f(x2) = 1.609375
+Iteration-3, x2 = 1.625000 and f(x2) = 0.666016
+Iteration-4, x2 = 1.562500 and f(x2) = 0.252197
+Iteration-5, x2 = 1.531250 and f(x2) = 0.059113
+Iteration-6, x2 = 1.515625 and f(x2) = -0.034054
+Iteration-7, x2 = 1.523438 and f(x2) = 0.012250
+Iteration-8, x2 = 1.519531 and f(x2) = -0.010971
+Iteration-9, x2 = 1.521484 and f(x2) = 0.000622
+
+
+Required Root is : 1.52148438
+
+
+
+
+
+
+2)Newton Raphson Method
+
+
+def derivative(value,expr):
+    
+    expr_diff = diff(expr, x)
+    val=expr_diff.subs(x,value)
+    return val
+
+
+
+
+def function(value,expr):
+    
+    val=expr.subs(x,value)
+    return val
+
+
+
+
+def newtonRaphson( x , expr):
+    
+    h = function(x, expr) / derivative(x, expr)
+    while abs(h) >= 0.0001:
+        h = function(x, expr) / derivative(x, expr)
+         
+        x = x - h
+        print("The value of the root is : ","%.4f"% x)
+
+
+x,y = symbols('x y')
+
+
+z=12
+expr=x**3 - 5*x - 9
+
+
+newtonRaphson(z,expr)
+
+
+
+
+3)Regula falsi method
+def f(x):
+    return 3*x - math.cos(x) - 1
+a=0
+b=1
+h = (abs(f(a))*(b-a))/(abs(f(a)) + abs(f(b)))
+while(h > 0.001):
+    a = a+h
+    h = (abs(f(a))*(b-a))/(abs(f(a)) + abs(f(b)))
+ print(f(a))
+ print(a)
+4)Fixed Point Iteration Method
+def fixedPointiteration(x0,e,N):
+    print('\n\n*** ITERATION TABLE ***')
+    step = 1
+    flag = 1
+    condition = True
+    while condition:
+        if g(x0) == 0.0:
+            print('Divide by zero error!')
+            break
+       
+        x1 = x0 - f(x0)/g(x0)
+        print('Iteration-%d, x1 = %0.4f and f(x1) = %0.4f' % (step, x1, f(x1)))
+        x0 = x1
+        step = step + 1
+       
+        if step > N:
+            flag = 0
+            break
+       
+        condition = abs(f(x1)) > e
+   
+    if flag==1:
+        print('\nRequired root is: %0.6f' % x1)
+    else:
+        print('\nNot Convergent.')
+
+
+x0 = float(input('Enter Guess: '))
+e = float(input('Tolerable Error: '))
+N = int(input('Maximum Step: '))
+
+
+fixedPointiteration(x0,e,N)
